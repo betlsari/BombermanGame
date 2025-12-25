@@ -11,6 +11,7 @@ using BombermanGame.src.Patterns.Behavioral.Command;
 using BombermanGame.src.Patterns.Behavioral.Observer;
 using BombermanGame.src.Patterns.Creational.Factory;
 using BombermanGame.src.Patterns.Repository;
+using BombermanGame.src.Patterns.Structural.Adapter;
 using BombermanGame.src.UI;
 
 namespace BombermanGame.src.MVC.Controllers
@@ -233,24 +234,36 @@ namespace BombermanGame.src.MVC.Controllers
 		// BU METODU EKLEMEN GEREKİYOR 👇
 		public void StartGame(User user, string roomId, bool isHost)
 		{
-			// 1. Parametreleri içeri alıyoruz
 			_currentRoomId = roomId;
 			_isHost = isHost;
-
-			// 2. Oyuncu ID'sini basitçe belirliyoruz (Host=1, Client=2)
-			// Gerçek projede bunu sunucudan almak daha doğrudur ama şimdilik böyle çalışır.
 			_localPlayerId = isHost ? 1 : 2;
 
 			Console.WriteLine($"\n[SYSTEM] Game Controller Initialized.");
 			Console.WriteLine($"Room: {roomId} | Role: {(_isHost ? "HOST" : "CLIENT")}");
 
-			// 3. GameManager'a mevcut kullanıcıyı set et
 			if (_gameManager != null)
 			{
 				_gameManager.CurrentUserId = user.Id;
+
+				// --- DÜZELTME BURADA ---
+				// 1. Önce ThemeFactory'yi oluştur
+				
+
+				// 2. "Desert" string'ini ITheme nesnesine çevir (GetTheme veya CreateTheme olabilir, kontrol et)
+				ITheme theme = ThemeFactory.GetTheme("Desert");
+
+				// 3. Haritaya string yerine bu nesneyi ver
+				_gameManager.CurrentMap = new Models.Map(21, 11, theme);
+				// -----------------------
+
+				_gameManager.Players.Clear();
+				var player1 = new Models.Player(1, "Player 1", new Models.Position(1, 1));
+				_gameManager.Players.Add(player1);
+
+				var player2 = new Models.Player(2, "Player 2", new Models.Position(19, 9));
+				_gameManager.Players.Add(player2);
 			}
 
-			// 4. Oyun döngüsünü başlat
 			HandleGameReady();
 		}
 
