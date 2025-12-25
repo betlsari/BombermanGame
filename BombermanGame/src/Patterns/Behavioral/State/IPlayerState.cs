@@ -1,6 +1,4 @@
-﻿// Patterns/Behavioral/State/IPlayerState.cs - STATE PATTERN
-
-// Patterns/Behavioral/State/IPlayerState.cs - STATE PATTERN
+﻿
 using BombermanGame.src.Models;
 
 namespace BombermanGame.src.Patterns.Behavioral.State

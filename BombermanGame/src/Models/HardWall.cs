@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// Models/HardWall.cs
+
 namespace BombermanGame.src.Models
 {
     public class HardWall : IWall

@@ -1,4 +1,4 @@
-﻿// Program.cs
+﻿
 using System;
 using System.Threading;
 using BombermanGame.src.Core;

@@ -1,4 +1,4 @@
-﻿// Database/DatabaseManager.cs - SINGLETON PATTERN
+﻿
 using System;
 using System.Data.SQLite;
 using System.IO;
@@ -12,10 +12,10 @@ namespace BombermanGame.src.Database
         private SQLiteConnection? _connection;
         private const string DatabaseFile = "bomberman.db";
 
-        // Private constructor - Singleton
+        
         private DatabaseManager() { }
 
-        // Thread-safe Singleton instance
+        
         public static DatabaseManager Instance
         {
             get

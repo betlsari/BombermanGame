@@ -1,5 +1,4 @@
-﻿// Utils/PasswordHelper.cs
-using BCrypt.Net;
+﻿using BCrypt.Net;
 
 namespace BombermanGame.src.Utils
 {

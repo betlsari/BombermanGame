@@ -1,13 +1,10 @@
-﻿// Patterns/Behavioral/Observer/SoundObserver.cs
+﻿
 using System;
 using BombermanGame.src.Audio;
 
 namespace BombermanGame.src.Patterns.Behavioral.Observer
 {
-    /// <summary>
-    /// Oyun olaylarını dinleyip ses efekti çalan Observer
-    /// OBSERVER PATTERN + SINGLETON PATTERN kombinasyonu
-    /// </summary>
+    
     public class SoundObserver : IObserver
     {
         private readonly SoundManager _soundManager;

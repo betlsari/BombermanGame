@@ -1,18 +1,18 @@
-﻿// UI/ConsoleUI.cs - Console yardımcı metodları
+﻿
 using System;
 
 namespace BombermanGame.src.UI
 {
     public class ConsoleUI
     {
-        // Ekranı temizle ve imleci gizle
+        
         public static void Initialize()
         {
             Console.Clear();
             Console.CursorVisible = false;
         }
 
-        // İmleci belirtilen pozisyona taşı
+        
         public static void SetCursorPosition(int x, int y)
         {
             if (x >= 0 && x < Console.WindowWidth && y >= 0 && y < Console.WindowHeight)
@@ -21,7 +21,7 @@ namespace BombermanGame.src.UI
             }
         }
 
-        // Renkli metin yazdır
+        
         public static void WriteColored(string text, ConsoleColor color)
         {
             Console.ForegroundColor = color;
@@ -29,7 +29,7 @@ namespace BombermanGame.src.UI
             Console.ResetColor();
         }
 
-        // Renkli metin yazdır (yeni satır ile)
+        
         public static void WriteLineColored(string text, ConsoleColor color)
         {
             Console.ForegroundColor = color;
@@ -37,7 +37,7 @@ namespace BombermanGame.src.UI
             Console.ResetColor();
         }
 
-        // Başlık çiz (kutu içinde)
+        
         public static void DrawTitle(string title)
         {
             int padding = (62 - title.Length) / 2;
@@ -46,14 +46,14 @@ namespace BombermanGame.src.UI
             Console.WriteLine("╚══════════════════════════════════════════════════════════════╝");
         }
 
-        // Başlık çiz (alt çizgi ile)
+        
         public static void DrawHeader(string header)
         {
             Console.WriteLine(header);
             Console.WriteLine(new string('─', header.Length));
         }
 
-        // Onay mesajı göster
+        
         public static bool ShowConfirmation(string message)
         {
             Console.Write($"\n{message} (Y/N): ");
@@ -62,38 +62,38 @@ namespace BombermanGame.src.UI
             return key.Key == ConsoleKey.Y;
         }
 
-        // Bekleme mesajı
+        
         public static void WaitForKey(string message = "Press any key to continue...")
         {
             Console.WriteLine($"\n{message}");
             Console.ReadKey(true);
         }
 
-        // Başarı mesajı
+        
         public static void ShowSuccess(string message)
         {
             WriteLineColored($"\n✓ {message}", ConsoleColor.Green);
         }
 
-        // Hata mesajı
+       
         public static void ShowError(string message)
         {
             WriteLineColored($"\n✗ {message}", ConsoleColor.Red);
         }
 
-        // Uyarı mesajı
+       
         public static void ShowWarning(string message)
         {
             WriteLineColored($"\n⚠ {message}", ConsoleColor.Yellow);
         }
 
-        // Bilgi mesajı
+        
         public static void ShowInfo(string message)
         {
             WriteLineColored($"\nℹ {message}", ConsoleColor.Cyan);
         }
 
-        // Progress bar çiz
+        
         public static void DrawProgressBar(int current, int total, int width = 40)
         {
             int filled = (int)((double)current / total * width);
@@ -105,13 +105,13 @@ namespace BombermanGame.src.UI
             Console.Write($"] {current}/{total}");
         }
 
-        // Yatay çizgi çiz
+        
         public static void DrawLine(char character = '─', int length = 62)
         {
             Console.WriteLine(new string(character, length));
         }
 
-        // Boş satırlar ekle
+        
         public static void AddSpacing(int lines = 1)
         {
             for (int i = 0; i < lines; i++)
@@ -120,7 +120,7 @@ namespace BombermanGame.src.UI
             }
         }
 
-        // Ekranı temizle ve başlığı göster
+        
         public static void ClearWithTitle(string title)
         {
             Console.Clear();
@@ -128,7 +128,7 @@ namespace BombermanGame.src.UI
             Console.WriteLine();
         }
 
-        // Menü seçeneği çiz
+        
         public static void DrawMenuOption(int number, string text, bool isSelected = false)
         {
             if (isSelected)
@@ -141,7 +141,7 @@ namespace BombermanGame.src.UI
             }
         }
 
-        // Kutu içinde metin göster
+        
         public static void DrawBox(string[] lines)
         {
             int maxLength = 0;
@@ -159,7 +159,7 @@ namespace BombermanGame.src.UI
             Console.WriteLine("╚" + new string('═', maxLength + 2) + "╝");
         }
 
-        // Şifre okuma (gizli)
+        
         public static string ReadPassword()
         {
             string password = "";
@@ -186,7 +186,7 @@ namespace BombermanGame.src.UI
             return password;
         }
 
-        // Loading animasyonu
+        
         public static void ShowLoading(string message, int durationMs = 1000)
         {
             string[] spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" };

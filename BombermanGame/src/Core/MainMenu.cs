@@ -1,4 +1,4 @@
-﻿// Core/MainMenu.cs
+﻿
 using System;
 using System.Linq;
 using System.Threading;
@@ -472,7 +472,7 @@ namespace BombermanGame.src.Core
 			}
 		}
 
-		// --- BU YARDIMCI METOTLARI EN ALTA EKLEMEYİ UNUTMA ---
+		
 		private string GetSafeString(System.Text.Json.JsonElement element, string key1, string key2, string def = "")
 		{
 			if (element.TryGetProperty(key1, out var val)) return val.GetString() ?? def;
@@ -518,14 +518,13 @@ namespace BombermanGame.src.Core
 
 			if (response != null)
 			{
-				// DÜZELTME BURADA: 
-				// Gelen 'response' nesnesini JsonElement'e çeviriyoruz.
+				
 				var jsonElement = (System.Text.Json.JsonElement)response;
 
-				// RoomId'yi güvenli bir şekilde okuyoruz
+				
 				string roomId = "";
 
-				// Büyük harf (RoomId) veya küçük harf (roomId) kontrolü
+				
 				if (jsonElement.TryGetProperty("RoomId", out var idProp))
 				{
 					roomId = idProp.GetString() ?? "";
@@ -538,7 +537,7 @@ namespace BombermanGame.src.Core
 				_lobbyDisplay.ShowSuccessMessage("Room created successfully!");
 				Thread.Sleep(1000);
 
-				// Artık elimizdeki string roomId'yi kullanabiliriz
+				
 				ShowLobbyWaitScreen(user, roomId, isHost: true);
 			}
 			else
@@ -563,8 +562,7 @@ namespace BombermanGame.src.Core
 				_lobbyDisplay.ShowSuccessMessage("Joined room successfully!");
 				Thread.Sleep(1000);
 
-				// HATA BURADAYDI: Eskiden burası boştu, şimdi bekleme ekranına yolluyoruz.
-				// Katılan kişi Host değildir (false).
+				
 				ShowLobbyWaitScreen(user, roomId, isHost: false);
 			}
 			else
@@ -764,7 +762,7 @@ namespace BombermanGame.src.Core
 		{
 			bool gameStarting = false;
 
-			// Oyun başlama sinyalini dinle
+			
 			Action<object> onGameStart = (id) => { gameStarting = true; }; 
 			_signalRClient.OnGameStarted += onGameStart;
 
@@ -783,7 +781,7 @@ namespace BombermanGame.src.Core
 
 			while (!gameStarting)
 			{
-				// Tuş kontrolü (Bloklamadan)
+				
 				if (Console.KeyAvailable)
 				{
 					var key = Console.ReadKey(true).Key;
@@ -791,7 +789,7 @@ namespace BombermanGame.src.Core
 					if (key == ConsoleKey.Enter && isHost)
 					{
 						Console.WriteLine("\nStarting game...");
-						_signalRClient.StartGameAsync(roomId).Wait(); // Sunucuya başlat sinyali at
+						_signalRClient.StartGameAsync(roomId).Wait(); 
 					}
 					else if (key == ConsoleKey.Escape)
 					{
@@ -805,10 +803,10 @@ namespace BombermanGame.src.Core
 				Thread.Sleep(100);
 			}
 
-			// Döngüden çıktıysa oyun başlıyor demektir!
-			_signalRClient.OnGameStarted -= onGameStart; // Temizlik
+			
+			_signalRClient.OnGameStarted -= onGameStart; 
 
-			// ONLINE OYUNU BAŞLAT
+			
 			StartOnlineGame(user, roomId, isHost);
 		}
 
@@ -818,7 +816,7 @@ namespace BombermanGame.src.Core
 			Console.WriteLine("Game Starting! Good Luck!");
 			Thread.Sleep(1000);
 
-			// OnlineGameController başlatılıyor...
+			
 			var onlineController = new OnlineGameController(_signalRClient);
 			onlineController.StartGame(user, roomId, isHost);
 		}

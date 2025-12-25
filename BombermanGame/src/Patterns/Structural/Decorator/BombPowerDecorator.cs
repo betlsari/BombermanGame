@@ -1,6 +1,4 @@
-﻿// Patterns/Structural/Decorator/BombPowerDecorator.cs
-
-// Patterns/Structural/Decorator/BombPowerDecorator.cs
+﻿
 using BombermanGame.src.Models;
 
 namespace BombermanGame.src.Patterns.Structural.Decorator

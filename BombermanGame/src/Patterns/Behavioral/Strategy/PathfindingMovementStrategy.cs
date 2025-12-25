@@ -1,4 +1,4 @@
-﻿// Patterns/Behavioral/Strategy/PathfindingMovementStrategy.cs
+﻿
 using System.Collections.Generic;
 using System.Linq;
 using BombermanGame.src.Models;

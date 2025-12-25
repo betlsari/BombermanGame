@@ -1,4 +1,4 @@
-﻿// Patterns/Repository/PreferencesRepository.cs
+﻿
 using System.Collections.Generic;
 using Dapper;
 using BombermanGame.src.Database;

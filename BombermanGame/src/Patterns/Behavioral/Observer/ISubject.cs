@@ -1,4 +1,4 @@
-﻿// Patterns/Behavioral/Observer/ISubject.cs
+﻿
 namespace BombermanGame.src.Patterns.Behavioral.Observer
 {
     public interface ISubject

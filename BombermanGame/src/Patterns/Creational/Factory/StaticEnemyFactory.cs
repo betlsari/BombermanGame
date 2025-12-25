@@ -1,4 +1,4 @@
-﻿// Patterns/Creational/Factory/StaticEnemyFactory.cs
+﻿
 using BombermanGame.src.Patterns.Behavioral.Strategy;
 using BombermanGame.src.Models;
 

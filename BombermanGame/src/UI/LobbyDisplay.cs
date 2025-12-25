@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 
 namespace BombermanGame.src.UI
 {
-	/// <summary>
-	/// Online multiplayer lobby UI - Oda listesi, oluşturma ve bekleme ekranları
-	/// AŞAMA 2.1: Lobby Display Implementation
-	/// </summary>
+	
 	public class LobbyDisplay
 	{
 		private const int REFRESH_INTERVAL = 2000; // 2 saniye
@@ -18,9 +15,7 @@ namespace BombermanGame.src.UI
 
 		#region Main Lobby Menu
 
-		/// <summary>
-		/// Ana lobby menüsünü göster
-		/// </summary>
+		
 		public void DisplayLobbyMenu(string username, int onlineCount = 0)
 		{
 			Console.Clear();
@@ -131,9 +126,7 @@ namespace BombermanGame.src.UI
 
 		#region Room List Display
 
-		/// <summary>
-		/// Oda listesini göster
-		/// </summary>
+		
 		public void ShowRoomList(List<RoomInfo> rooms, int selectedIndex = -1)
 		{
 			Console.Clear();
@@ -205,9 +198,7 @@ namespace BombermanGame.src.UI
 			Console.WriteLine("\nUse ↑↓ to navigate | Enter to join | ESC to go back | R to refresh");
 		}
 
-		/// <summary>
-		/// Oda listesinde gezinme
-		/// </summary>
+		
 		public int NavigateRoomList(List<RoomInfo> rooms)
 		{
 			if (rooms == null || rooms.Count == 0)
@@ -263,9 +254,7 @@ namespace BombermanGame.src.UI
 
 		#region Room Details
 
-		/// <summary>
-		/// Oda detaylarını göster
-		/// </summary>
+		
 		public void ShowRoomDetails(RoomInfo room)
 		{
 			Console.Clear();
@@ -298,9 +287,7 @@ namespace BombermanGame.src.UI
 
 		#region Create Room Form
 
-		/// <summary>
-		/// Oda oluşturma formu göster
-		/// </summary>
+		
 		public CreateRoomData? ShowCreateRoomForm(string defaultPlayerName)
 		{
 			Console.Clear();
@@ -380,9 +367,6 @@ namespace BombermanGame.src.UI
 
 		#region Player List
 
-		/// <summary>
-		/// Oyuncu listesini göster (odada beklerken)
-		/// </summary>
 		public void ShowPlayerList(List<string> playerNames, bool isHost)
 		{
 			Console.WriteLine("\n╔══════════════════════════════════════════════════════════════╗");
@@ -417,9 +401,7 @@ namespace BombermanGame.src.UI
 
 		#region Waiting Screen
 
-		/// <summary>
-		/// Bekleme ekranı - Oyun başlayana kadar
-		/// </summary>
+		
 		public void ShowWaitingScreen(RoomInfo room, bool isHost, CancellationToken cancellationToken = default)
 		{
 			_isWaiting = true;
@@ -486,9 +468,7 @@ namespace BombermanGame.src.UI
 			}
 		}
 
-		/// <summary>
-		/// Bekleme ekranını durdur
-		/// </summary>
+		
 		public void StopWaiting()
 		{
 			_isWaiting = false;
@@ -498,9 +478,7 @@ namespace BombermanGame.src.UI
 
 		#region Game Starting Screen
 
-		/// <summary>
-		/// Oyun başlama countdown'u
-		/// </summary>
+		
 		public void ShowGameStarting(int seconds = 3)
 		{
 			Console.Clear();
@@ -541,9 +519,7 @@ namespace BombermanGame.src.UI
 
 		#region Connection Status
 
-		/// <summary>
-		/// Bağlantı durumu göster
-		/// </summary>
+		
 		public void ShowConnectionStatus(string status, bool isConnected)
 		{
 			Console.SetCursorPosition(0, Console.WindowHeight - 1);
@@ -560,9 +536,7 @@ namespace BombermanGame.src.UI
 
 		#region Helper Methods
 
-		/// <summary>
-		/// String'i belirtilen uzunlukta kırp
-		/// </summary>
+		
 		private string TruncateString(string text, int maxLength)
 		{
 			if (string.IsNullOrEmpty(text))
@@ -574,9 +548,7 @@ namespace BombermanGame.src.UI
 			return text.Substring(0, maxLength - 3) + "...";
 		}
 
-		/// <summary>
-		/// Yükleniyor animasyonu göster
-		/// </summary>
+		
 		public void ShowLoadingAnimation(string message, int durationMs = 2000)
 		{
 			string[] frames = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" };
@@ -590,9 +562,7 @@ namespace BombermanGame.src.UI
 			Console.WriteLine();
 		}
 
-		/// <summary>
-		/// Başarı mesajı göster
-		/// </summary>
+	
 		public void ShowSuccessMessage(string message)
 		{
 			Console.WriteLine();
@@ -600,9 +570,7 @@ namespace BombermanGame.src.UI
 			Thread.Sleep(1500);
 		}
 
-		/// <summary>
-		/// Hata mesajı göster
-		/// </summary>
+		
 		public void ShowErrorMessage(string message)
 		{
 			Console.WriteLine();
@@ -615,9 +583,7 @@ namespace BombermanGame.src.UI
 
 	#region Data Classes
 
-	/// <summary>
-	/// Oda oluşturma verileri
-	/// </summary>
+	
 	public class CreateRoomData
 	{
 		public string RoomName { get; set; } = "";
@@ -626,9 +592,7 @@ namespace BombermanGame.src.UI
 		public int MaxPlayers { get; set; } = 2;
 	}
 
-	/// <summary>
-	/// Oda bilgileri (DTO)
-	/// </summary>
+	
 	public class RoomInfo
 	{
 		public string Id { get; set; } = "";

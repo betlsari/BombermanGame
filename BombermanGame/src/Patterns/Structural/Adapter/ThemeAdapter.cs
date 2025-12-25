@@ -1,4 +1,4 @@
-﻿// Patterns/Structural/Adapter/DesertThemeAdapter.cs
+﻿
 using System;
 
 namespace BombermanGame.src.Patterns.Structural.Adapter

@@ -1,4 +1,4 @@
-﻿// Patterns/Repository/IRepository.cs - REPOSITORY PATTERN
+﻿
 using System.Collections.Generic;
 
 namespace BombermanGame.src.Patterns.Repository

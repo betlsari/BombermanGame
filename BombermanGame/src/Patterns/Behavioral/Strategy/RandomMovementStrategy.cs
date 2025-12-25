@@ -1,4 +1,4 @@
-﻿// Patterns/Behavioral/Strategy/RandomMovementStrategy.cs
+﻿
 using System;
 using BombermanGame.src.Models;
 

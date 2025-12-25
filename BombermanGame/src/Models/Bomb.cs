@@ -1,6 +1,4 @@
-﻿using System;
-
-// Models/Bomb.cs
+﻿
 using System;
 
 namespace BombermanGame.src.Models

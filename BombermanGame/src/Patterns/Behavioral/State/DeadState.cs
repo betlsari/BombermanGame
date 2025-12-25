@@ -1,4 +1,4 @@
-﻿// Patterns/Behavioral/State/DeadState.cs
+﻿
 using System;
 using BombermanGame.src.Models;
 

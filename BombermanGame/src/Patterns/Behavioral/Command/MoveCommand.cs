@@ -1,4 +1,4 @@
-﻿// Patterns/Behavioral/Command/MoveCommand.cs
+﻿
 using BombermanGame.src.Models;
 
 namespace BombermanGame.src.Patterns.Behavioral.Command

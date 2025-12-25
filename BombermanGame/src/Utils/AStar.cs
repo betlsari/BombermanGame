@@ -1,5 +1,4 @@
-﻿// Utils/AStar.cs - A* Pathfinding Implementation (BONUS +5)
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using BombermanGame.src.Models;

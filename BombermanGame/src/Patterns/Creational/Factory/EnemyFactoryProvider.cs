@@ -1,4 +1,4 @@
-﻿// Patterns/Creational/Factory/EnemyFactoryProvider.cs
+﻿
 using BombermanGame.src.Patterns.Creational.Factory;
 using System;
 

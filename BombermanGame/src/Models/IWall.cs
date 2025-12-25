@@ -1,4 +1,4 @@
-﻿// Models / IWall.cs
+﻿
 namespace BombermanGame.src.Models
 {
     public interface IWall

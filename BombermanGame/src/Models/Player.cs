@@ -1,4 +1,4 @@
-﻿// Models/Player.cs
+﻿
 using BombermanGame.src.Patterns.Behavioral.State;
 using BombermanGame.src.Patterns.Structural.Decorator;
 

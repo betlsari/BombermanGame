@@ -1,4 +1,4 @@
-﻿// Patterns/Behavioral/Observer/GameEvent.cs - OBSERVER PATTERN
+﻿
 using System;
 
 namespace BombermanGame.src.Patterns.Behavioral.Observer

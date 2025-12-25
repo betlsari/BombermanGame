@@ -1,4 +1,4 @@
-﻿// UI/GameRenderer.cs - UPDATED WITH SIGNALR FEATURES
+﻿
 using System;
 using System.Linq;
 using BombermanGame.src.Core;

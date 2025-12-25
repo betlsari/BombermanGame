@@ -1,4 +1,4 @@
-﻿// Models/UnbreakableWall.cs
+﻿
 namespace BombermanGame.src.Models
 {
     public class UnbreakableWall : IWall

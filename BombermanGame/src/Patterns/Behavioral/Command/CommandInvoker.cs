@@ -1,4 +1,4 @@
-﻿// Patterns/Behavioral/Command/CommandInvoker.cs
+﻿
 using System.Collections.Generic;
 
 namespace BombermanGame.src.Patterns.Behavioral.Command

@@ -1,6 +1,4 @@
-﻿// Patterns/Structural/Decorator/IPlayer.cs - DECORATOR PATTERN
-
-// Patterns/Structural/Decorator/IPlayer.cs - DECORATOR PATTERN
+﻿
 using BombermanGame.src.Models;
 
 namespace BombermanGame.src.Patterns.Structural.Decorator

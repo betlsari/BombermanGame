@@ -1,4 +1,4 @@
-﻿// Patterns/Repository/StatsRepository.cs
+﻿
 using System.Collections.Generic;
 using Dapper;
 using BombermanGame.src.Database;

@@ -1,4 +1,4 @@
-﻿// Patterns/Behavioral/Observer/StatsObserver.cs - DÜZELTİLMİŞ
+﻿
 using System;
 using BombermanGame.src.Core;
 using BombermanGame.src.Patterns.Repository;

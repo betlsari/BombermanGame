@@ -1,4 +1,4 @@
-﻿// Patterns/Structural/Adapter/CityThemeAdapter.cs
+﻿
 using System;
 
 namespace BombermanGame.src.Patterns.Structural.Adapter

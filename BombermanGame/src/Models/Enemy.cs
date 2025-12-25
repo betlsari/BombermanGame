@@ -1,4 +1,4 @@
-﻿// Models/Enemy.cs
+﻿
 using BombermanGame.src.Patterns.Behavioral.Strategy;
 using System;
 

@@ -1,4 +1,4 @@
-﻿// Patterns/Behavioral/Command/PlaceBombCommand.cs
+﻿
 using System.Linq;
 using BombermanGame.src.Core;
 using BombermanGame.src.Models;

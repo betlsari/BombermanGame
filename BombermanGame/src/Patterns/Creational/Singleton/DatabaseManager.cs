@@ -1,4 +1,4 @@
-﻿//// Database/DatabaseManager.cs - SINGLETON PATTERN
+﻿
 //using System;
 //using System.Data.SQLite;
 //using System.IO;

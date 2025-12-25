@@ -1,4 +1,4 @@
-﻿// Models/Map.cs - PATLAMA ALANI DÜZELTMESİ
+﻿
 using System;
 using System.Collections.Generic;
 
@@ -104,12 +104,12 @@ namespace BombermanGame.src.Models
             return Tiles[y, x];
         }
 
-        // DÜZELTİLMİŞ: Patlama alanı hesaplama - duvarları dikkate alır
+        
         public List<Position> GetExplosionArea(Position bombPosition, int power)
         {
             var explosionArea = new List<Position>();
 
-            // Bombanın kendisi her zaman patlama alanında
+            
             explosionArea.Add(new Position(bombPosition.X, bombPosition.Y));
 
             // 4 yön: Sol, Sağ, Yukarı, Aşağı
@@ -124,27 +124,22 @@ namespace BombermanGame.src.Models
                     int x = bombPosition.X + dx[dir] * i;
                     int y = bombPosition.Y + dy[dir] * i;
 
-                    // Harita sınırları dışında mı?
+                    
                     if (x < 0 || x >= Width || y < 0 || y >= Height)
                         break;
 
                     var tile = Tiles[y, x];
 
-                    // Bu pozisyonu patlama alanına ekle
+                   
                     explosionArea.Add(new Position(x, y));
 
-                    // KIRILAMAZ DUVARA ÇARPTI MI?
-                    // Kırılamaz duvarda DUR (patlama daha ileriye gidemez)
+                   
                     if (tile is UnbreakableWall)
                     {
                         // Kırılamaz duvardan sonrasını ekleme
                         break;
                     }
 
-                    // KIRILAB İLİR DUVARA ÇARPTI MI?
-                    // Kırılabilir duvar veya hard wall'a çarptıysa:
-                    // - Bu duvarı patlama alanına ekle (yukarıda eklendi)
-                    // - Ama bundan sonrasını EKLEME (patlama durur)
                     if (tile.IsDestructible() && !tile.IsDestroyed())
                     {
                         // Bu duvarı yık ama daha ileriye gitme
@@ -153,7 +148,7 @@ namespace BombermanGame.src.Models
                 }
             }
 
-            // DEBUG: Patlama alanını göster
+            
             Console.SetCursorPosition(0, Console.WindowHeight - 5);
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write($"[EXPLOSION] Bomb at ({bombPosition.X},{bombPosition.Y}) Power:{power} Area:{explosionArea.Count} tiles    ");

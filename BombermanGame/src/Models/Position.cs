@@ -1,4 +1,4 @@
-﻿// Models/Position.cs
+﻿
 using System;
 
 namespace BombermanGame.src.Models

@@ -1,4 +1,4 @@
-﻿// Patterns/Creational/Factory/SmartEnemyFactory.cs
+﻿
 using BombermanGame.src.Patterns.Behavioral.Strategy;
 using BombermanGame.src.Models;
 using System;

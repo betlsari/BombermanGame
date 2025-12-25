@@ -1,5 +1,4 @@
-﻿// Patterns/Behavioral/Strategy/ChaseMovementStrategy.cs
-using System;
+﻿using System;
 using BombermanGame.src.Models;
 
 namespace BombermanGame.src.Patterns.Behavioral.Strategy

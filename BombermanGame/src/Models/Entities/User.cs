@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// Models/Entities/User.cs
 namespace BombermanGame.src.Models.Entities
 {
     public class User

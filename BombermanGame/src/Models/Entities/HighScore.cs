@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// Models/Entities/HighScore.cs
+
 namespace BombermanGame.src.Models.Entities
 {
     public class HighScore

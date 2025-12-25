@@ -1,8 +1,8 @@
-﻿// Patterns/Behavioral/State/AliveState.cs
+﻿
 using System;
 using BombermanGame.src.Models;
 using BombermanGame.src.Core;
-using BombermanGame.src.Models;
+
 
 namespace BombermanGame.src.Patterns.Behavioral.State
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-// Models/PowerUp.cs
+
 namespace BombermanGame.src.Models
 {
     public enum PowerUpType

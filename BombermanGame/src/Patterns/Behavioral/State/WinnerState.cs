@@ -1,4 +1,4 @@
-﻿// Patterns/Behavioral/State/WinnerState.cs
+﻿
 using System;
 using BombermanGame.src.Models;
 

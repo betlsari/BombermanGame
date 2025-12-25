@@ -1,4 +1,4 @@
-﻿// MVC/Controllers/OnlineGameController.cs
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
