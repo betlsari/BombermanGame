@@ -518,7 +518,28 @@ namespace BombermanGame.src.Core
 
 			if (response != null)
 			{
+				// DÜZELTME BURADA: 
+				// Gelen 'response' nesnesini JsonElement'e çeviriyoruz.
+				var jsonElement = (System.Text.Json.JsonElement)response;
+
+				// RoomId'yi güvenli bir şekilde okuyoruz
+				string roomId = "";
+
+				// Büyük harf (RoomId) veya küçük harf (roomId) kontrolü
+				if (jsonElement.TryGetProperty("RoomId", out var idProp))
+				{
+					roomId = idProp.GetString() ?? "";
+				}
+				else if (jsonElement.TryGetProperty("roomId", out var idPropLower))
+				{
+					roomId = idPropLower.GetString() ?? "";
+				}
+
 				_lobbyDisplay.ShowSuccessMessage("Room created successfully!");
+				Thread.Sleep(1000);
+
+				// Artık elimizdeki string roomId'yi kullanabiliriz
+				ShowLobbyWaitScreen(user, roomId, isHost: true);
 			}
 			else
 			{
@@ -540,6 +561,11 @@ namespace BombermanGame.src.Core
 			if (success)
 			{
 				_lobbyDisplay.ShowSuccessMessage("Joined room successfully!");
+				Thread.Sleep(1000);
+
+				// HATA BURADAYDI: Eskiden burası boştu, şimdi bekleme ekranına yolluyoruz.
+				// Katılan kişi Host değildir (false).
+				ShowLobbyWaitScreen(user, roomId, isHost: false);
 			}
 			else
 			{
@@ -732,6 +758,69 @@ namespace BombermanGame.src.Core
 
 			Console.WriteLine("\nPress any key to continue...");
 			Console.ReadKey();
+		}
+
+		private void ShowLobbyWaitScreen(User user, string roomId, bool isHost)
+		{
+			bool gameStarting = false;
+
+			// Oyun başlama sinyalini dinle
+			Action<object> onGameStart = (id) => { gameStarting = true; }; 
+			_signalRClient.OnGameStarted += onGameStart;
+
+			Console.Clear();
+			Console.WriteLine("╔══════════════════════════════════════════════════════════════╗");
+			Console.WriteLine($"║            WAITING LOBBY (Room: {roomId})            ║");
+			Console.WriteLine("╚══════════════════════════════════════════════════════════════╝");
+			Console.WriteLine("\nPlayers connected...");
+
+			if (isHost)
+				Console.WriteLine("\n[HOST] Press 'ENTER' to Start Game when ready...");
+			else
+				Console.WriteLine("\n[CLIENT] Waiting for host to start the game...");
+
+			Console.WriteLine("Press 'ESC' to Leave Room.");
+
+			while (!gameStarting)
+			{
+				// Tuş kontrolü (Bloklamadan)
+				if (Console.KeyAvailable)
+				{
+					var key = Console.ReadKey(true).Key;
+
+					if (key == ConsoleKey.Enter && isHost)
+					{
+						Console.WriteLine("\nStarting game...");
+						_signalRClient.StartGameAsync(roomId).Wait(); // Sunucuya başlat sinyali at
+					}
+					else if (key == ConsoleKey.Escape)
+					{
+						_signalRClient.LeaveRoomAsync(roomId).Wait(); 
+						_signalRClient.OnGameStarted -= onGameStart; // Eventi temizle
+						return; // Menüye dön
+					}
+				}
+
+				// İşlemciyi yormamak için minik bekleme
+				Thread.Sleep(100);
+			}
+
+			// Döngüden çıktıysa oyun başlıyor demektir!
+			_signalRClient.OnGameStarted -= onGameStart; // Temizlik
+
+			// ONLINE OYUNU BAŞLAT
+			StartOnlineGame(user, roomId, isHost);
+		}
+
+		private void StartOnlineGame(User user, string roomId, bool isHost)
+		{
+			Console.Clear();
+			Console.WriteLine("Game Starting! Good Luck!");
+			Thread.Sleep(1000);
+
+			// OnlineGameController başlatılıyor...
+			var onlineController = new OnlineGameController(_signalRClient);
+			onlineController.StartGame(user, roomId, isHost);
 		}
 
 		private string ReadPassword()

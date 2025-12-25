@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BombermanGame.src.Core;
 using BombermanGame.src.Models;
+using BombermanGame.src.Models.Entities;
 using BombermanGame.src.Network;
 using BombermanGame.src.Patterns.Behavioral.Command;
 using BombermanGame.src.Patterns.Behavioral.Observer;
@@ -227,6 +228,30 @@ namespace BombermanGame.src.MVC.Controllers
 			{
 				Console.WriteLine($"❌ Error starting game: {ex.Message}");
 			}
+		}
+
+		// BU METODU EKLEMEN GEREKİYOR 👇
+		public void StartGame(User user, string roomId, bool isHost)
+		{
+			// 1. Parametreleri içeri alıyoruz
+			_currentRoomId = roomId;
+			_isHost = isHost;
+
+			// 2. Oyuncu ID'sini basitçe belirliyoruz (Host=1, Client=2)
+			// Gerçek projede bunu sunucudan almak daha doğrudur ama şimdilik böyle çalışır.
+			_localPlayerId = isHost ? 1 : 2;
+
+			Console.WriteLine($"\n[SYSTEM] Game Controller Initialized.");
+			Console.WriteLine($"Room: {roomId} | Role: {(_isHost ? "HOST" : "CLIENT")}");
+
+			// 3. GameManager'a mevcut kullanıcıyı set et
+			if (_gameManager != null)
+			{
+				_gameManager.CurrentUserId = user.Id;
+			}
+
+			// 4. Oyun döngüsünü başlat
+			HandleGameReady();
 		}
 
 		private void HandleGameReady()
