@@ -46,19 +46,6 @@ namespace BombermanGame.src.MVC.Controllers
 			};
 		}
 
-		public void SetOnlineMode(SignalRClient client, string roomId)
-		{
-			IsOnlineMode = true;
-			_signalRClient = client;
-			_currentRoomId = roomId;
-		}
-
-		public void SetOfflineMode()
-		{
-			IsOnlineMode = false;
-			_signalRClient = null;
-			_currentRoomId = "";
-		}
 
 		public ICommand? ProcessInput(ConsoleKeyInfo key, Player player, Map map)
 		{
@@ -81,35 +68,7 @@ namespace BombermanGame.src.MVC.Controllers
 			return null;
 		}
 
-		public async Task ProcessOnlineInput(ConsoleKeyInfo key, Player player, Map map)
-		{
-			if (!IsOnlineMode || _signalRClient == null || !player.IsAlive)
-				return;
-
-			var oldX = player.Position.X;
-			var oldY = player.Position.Y;
-
-			var command = ProcessInput(key, player, map);
-			if (command != null)
-			{
-				_commandInvoker.ExecuteCommand(command);
-
-				if (player.Position.X != oldX || player.Position.Y != oldY)
-				{
-					await _signalRClient.SendMoveAsync(_currentRoomId, player.Position.X, player.Position.Y);
-				}
-				else if (command is PlaceBombCommand)
-				{
-					var gameManager = Core.GameManager.Instance;
-					var bomb = gameManager.Bombs.LastOrDefault(b => b.OwnerId == player.Id);
-					if (bomb != null)
-					{
-						await _signalRClient.SendPlaceBombAsync(_currentRoomId, bomb.Position.X, bomb.Position.Y, bomb.Power);
-					}
-				}
-			}
-		}
-
+		
 		public void ProcessMultiplayerInput(ConsoleKeyInfo key, List<Player> players, Map map)
 		{
 			foreach (var player in players)
@@ -130,20 +89,6 @@ namespace BombermanGame.src.MVC.Controllers
 			_commandInvoker.UndoLastCommand();
 		}
 
-		public void ClearHistory()
-		{
-			_commandInvoker.ClearHistory();
-		}
-
-		public void SetPlayerControls(int playerId, PlayerControls controls)
-		{
-			_playerControls[playerId] = controls;
-		}
-
-		public PlayerControls? GetPlayerControls(int playerId)
-		{
-			return _playerControls.ContainsKey(playerId) ? _playerControls[playerId] : null;
-		}
 	}
 
 	public class PlayerControls
@@ -158,9 +103,6 @@ namespace BombermanGame.src.MVC.Controllers
 		public ConsoleKey? AlternateLeft { get; set; }
 		public ConsoleKey? AlternateRight { get; set; }
 
-		public string GetControlsString()
-		{
-			return $"↑:{Up} ↓:{Down} ←:{Left} →:{Right} Bomb:{PlaceBomb}";
-		}
+		
 	}
 }

@@ -13,118 +13,7 @@ namespace BombermanGame.src.UI
 		private bool _isWaiting = false;
 		private CancellationTokenSource? _refreshCancellation;
 
-		#region Main Lobby Menu
-
-		
-		public void DisplayLobbyMenu(string username, int onlineCount = 0)
-		{
-			Console.Clear();
-			DrawLobbyHeader(username, onlineCount);
-
-			Console.WriteLine("\n╔══════════════════════════════════════════════════════════════╗");
-			Console.WriteLine("║                      ONLINE LOBBY                            ║");
-			Console.WriteLine("╚══════════════════════════════════════════════════════════════╝\n");
-
-			Console.WriteLine("1. Create Room");
-			Console.WriteLine("2. Browse Rooms");
-			Console.WriteLine("3. Quick Join (Random Room)");
-			Console.WriteLine("4. Refresh");
-			Console.WriteLine("5. Back to Main Menu");
-			Console.WriteLine("\n──────────────────────────────────────────────────────────────");
-		}
-
-		/// <summary>
-		/// Lobby başlığını çiz
-		/// </summary>
-		private void DrawLobbyHeader(string username, int onlineCount)
-		{
-			ConsoleUI.WriteLineColored("╔══════════════════════════════════════════════════════════════╗", ConsoleColor.Cyan);
-			ConsoleUI.WriteLineColored($"║  👤 Player: {username,-47} ║", ConsoleColor.Cyan);
-			ConsoleUI.WriteLineColored($"║  🌐 Online: {onlineCount} players{new string(' ', 41)} ║", ConsoleColor.Cyan);
-			ConsoleUI.WriteLineColored("╚══════════════════════════════════════════════════════════════╝", ConsoleColor.Cyan);
-		}
-
-		/// <summary>
-		/// Lobby menüsünde gezinme (klavye navigasyonu)
-		/// </summary>
-		public int NavigateLobbyMenu(string username, int onlineCount = 0, int currentIndex = 0)
-		{
-			var options = new List<string>
-			{
-				"Create Room",
-				"Browse Rooms",
-				"Quick Join (Random Room)",
-				"Refresh",
-				"Back to Main Menu"
-			};
-
-			while (true)
-			{
-				Console.Clear();
-				DrawLobbyHeader(username, onlineCount);
-
-				Console.WriteLine("\n╔══════════════════════════════════════════════════════════════╗");
-				Console.WriteLine("║                      ONLINE LOBBY                            ║");
-				Console.WriteLine("╚══════════════════════════════════════════════════════════════╝\n");
-
-				for (int i = 0; i < options.Count; i++)
-				{
-					if (i == currentIndex)
-					{
-						ConsoleUI.WriteColored($"► {i + 1}. {options[i]}\n", ConsoleColor.Yellow);
-					}
-					else
-					{
-						Console.WriteLine($"  {i + 1}. {options[i]}");
-					}
-				}
-
-				Console.WriteLine("\n──────────────────────────────────────────────────────────────");
-				Console.WriteLine("Use ↑↓ or W/S to navigate | Enter to select | ESC to go back");
-
-				var key = Console.ReadKey(true);
-
-				switch (key.Key)
-				{
-					case ConsoleKey.UpArrow:
-					case ConsoleKey.W:
-						currentIndex = (currentIndex - 1 + options.Count) % options.Count;
-						break;
-
-					case ConsoleKey.DownArrow:
-					case ConsoleKey.S:
-						currentIndex = (currentIndex + 1) % options.Count;
-						break;
-
-					case ConsoleKey.Enter:
-					case ConsoleKey.Spacebar:
-						return currentIndex + 1; // Return 1-based index
-
-					case ConsoleKey.Escape:
-						return 5; // Back to main menu
-
-					case ConsoleKey.D1:
-					case ConsoleKey.NumPad1:
-						return 1;
-					case ConsoleKey.D2:
-					case ConsoleKey.NumPad2:
-						return 2;
-					case ConsoleKey.D3:
-					case ConsoleKey.NumPad3:
-						return 3;
-					case ConsoleKey.D4:
-					case ConsoleKey.NumPad4:
-						return 4;
-					case ConsoleKey.D5:
-					case ConsoleKey.NumPad5:
-						return 5;
-				}
-			}
-		}
-
-		#endregion
-
-		#region Room List Display
+	
 
 		
 		public void ShowRoomList(List<RoomInfo> rooms, int selectedIndex = -1)
@@ -250,40 +139,9 @@ namespace BombermanGame.src.UI
 			}
 		}
 
-		#endregion
-
-		#region Room Details
+		
 
 		
-		public void ShowRoomDetails(RoomInfo room)
-		{
-			Console.Clear();
-			Console.WriteLine("╔══════════════════════════════════════════════════════════════╗");
-			Console.WriteLine("║                      ROOM DETAILS                            ║");
-			Console.WriteLine("╚══════════════════════════════════════════════════════════════╝\n");
-
-			Console.WriteLine($"Room Name:     {room.Name}");
-			Console.WriteLine($"Room ID:       {room.Id.Substring(0, 8)}...");
-			Console.WriteLine($"Theme:         {room.Theme}");
-			Console.WriteLine($"Status:        {room.State}");
-			Console.WriteLine($"Players:       {room.CurrentPlayers}/{room.MaxPlayers}");
-			Console.WriteLine();
-
-			if (room.PlayerNames.Count > 0)
-			{
-				Console.WriteLine("Current Players:");
-				Console.WriteLine("─────────────────────");
-				for (int i = 0; i < room.PlayerNames.Count; i++)
-				{
-					var icon = i == 0 ? "👑" : "👤";
-					Console.WriteLine($"{icon} {room.PlayerNames[i]}");
-				}
-			}
-
-			Console.WriteLine("\n──────────────────────────────────────────────────────────────");
-		}
-
-		#endregion
 
 		#region Create Room Form
 
@@ -399,140 +257,18 @@ namespace BombermanGame.src.UI
 
 		#endregion
 
-		#region Waiting Screen
+		
+		
+		
 
 		
-		public void ShowWaitingScreen(RoomInfo room, bool isHost, CancellationToken cancellationToken = default)
-		{
-			_isWaiting = true;
-			int frame = 0;
-			string[] spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" };
-
-			while (_isWaiting && !cancellationToken.IsCancellationRequested)
-			{
-				Console.Clear();
-				Console.WriteLine("╔══════════════════════════════════════════════════════════════╗");
-				Console.WriteLine("║                      WAITING FOR GAME                        ║");
-				Console.WriteLine("╚══════════════════════════════════════════════════════════════╝\n");
-
-				// Room Info
-				Console.WriteLine($"Room:    {room.Name}");
-				Console.WriteLine($"Theme:   {room.Theme}");
-				Console.WriteLine($"Players: {room.CurrentPlayers}/{room.MaxPlayers}");
-				Console.WriteLine();
-
-				// Player List
-				ShowPlayerList(room.PlayerNames, isHost);
-
-				// Waiting animation
-				Console.Write($"\n{spinner[frame % spinner.Length]} ");
-
-				if (isHost)
-				{
-					if (room.CurrentPlayers >= 2)
-					{
-						ConsoleUI.WriteColored("Ready to start! Press SPACE to begin", ConsoleColor.Green);
-					}
-					else
-					{
-						ConsoleUI.WriteColored("Waiting for at least 1 more player...", ConsoleColor.Yellow);
-					}
-					Console.WriteLine("\n\nPress ESC to cancel | SPACE to start (host only)");
-				}
-				else
-				{
-					ConsoleUI.WriteColored("Waiting for host to start the game...", ConsoleColor.Cyan);
-					Console.WriteLine("\n\nPress ESC to leave room");
-				}
-
-				frame++;
-				Thread.Sleep(200);
-
-				// Check for input without blocking
-				if (Console.KeyAvailable)
-				{
-					var key = Console.ReadKey(true);
-
-					if (key.Key == ConsoleKey.Escape)
-					{
-						_isWaiting = false;
-						return;
-					}
-
-					if (isHost && key.Key == ConsoleKey.Spacebar && room.CurrentPlayers >= 2)
-					{
-						_isWaiting = false;
-						return;
-					}
-				}
-			}
-		}
 
 		
-		public void StopWaiting()
-		{
-			_isWaiting = false;
-		}
-
-		#endregion
-
-		#region Game Starting Screen
+		
 
 		
-		public void ShowGameStarting(int seconds = 3)
-		{
-			Console.Clear();
-
-			for (int i = seconds; i > 0; i--)
-			{
-				Console.Clear();
-				ConsoleUI.AddSpacing(10);
-
-				var color = i switch
-				{
-					3 => ConsoleColor.Green,
-					2 => ConsoleColor.Yellow,
-					1 => ConsoleColor.Red,
-					_ => ConsoleColor.White
-				};
-
-				int cursorLeft = Console.WindowWidth / 2 - 10;
-				int cursorTop = Console.WindowHeight / 2;
-
-				Console.SetCursorPosition(cursorLeft, cursorTop);
-				ConsoleUI.WriteColored($"    GAME STARTING IN    ", ConsoleColor.White);
-
-				Console.SetCursorPosition(cursorLeft + 5, cursorTop + 2);
-				ConsoleUI.WriteColored($"        {i}        ", color);
-
-				Thread.Sleep(1000);
-			}
-
-			Console.Clear();
-			ConsoleUI.AddSpacing(10);
-			Console.SetCursorPosition(Console.WindowWidth / 2 - 10, Console.WindowHeight / 2);
-			ConsoleUI.WriteLineColored("         GO!         ", ConsoleColor.Cyan);
-			Thread.Sleep(500);
-		}
-
-		#endregion
-
-		#region Connection Status
 
 		
-		public void ShowConnectionStatus(string status, bool isConnected)
-		{
-			Console.SetCursorPosition(0, Console.WindowHeight - 1);
-
-			var color = isConnected ? ConsoleColor.Green : ConsoleColor.Red;
-			var icon = isConnected ? "●" : "○";
-
-			Console.Write("Connection: ");
-			ConsoleUI.WriteColored($"{icon} {status}", color);
-			Console.Write(new string(' ', 40)); // Clear rest of line
-		}
-
-		#endregion
 
 		#region Helper Methods
 

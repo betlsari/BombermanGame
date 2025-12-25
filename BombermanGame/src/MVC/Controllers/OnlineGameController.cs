@@ -72,170 +72,6 @@ namespace BombermanGame.src.MVC.Controllers
             _eventHandler.OnErrorOccurred += HandleError;
         }
 
-        public async Task<bool> CreateRoomAsync(string roomName, string playerName, string theme, int maxPlayers)
-        {
-            try
-            {
-                Console.Clear();
-                Console.WriteLine("╔══════════════════════════════════════════════════════════════╗");
-                Console.WriteLine("║                    CREATING ROOM                             ║");
-                Console.WriteLine("╚══════════════════════════════════════════════════════════════╝\n");
-
-                Console.WriteLine($"Room Name: {roomName}");
-                Console.WriteLine($"Theme: {theme}");
-                Console.WriteLine($"Max Players: {maxPlayers}");
-                Console.WriteLine("\n🔄 Creating room...");
-
-                var response = await _signalRClient.CreateRoomAsync(roomName, playerName, theme, maxPlayers);
-
-                if (response == null)
-                {
-                    Console.WriteLine("\n❌ Failed to create room - no response from server");
-                    Thread.Sleep(2000);
-                    return false;
-                }
-
-                var responseElement = (System.Text.Json.JsonElement)response;
-                bool success = responseElement.GetProperty("Success").GetBoolean();
-
-                if (!success)
-                {
-                    string errorMsg = responseElement.GetProperty("ErrorMessage").GetString() ?? "Unknown error";
-                    Console.WriteLine($"\n❌ Failed to create room: {errorMsg}");
-                    Thread.Sleep(2000);
-                    return false;
-                }
-
-                _currentRoomId = responseElement.GetProperty("RoomId").GetString() ?? "";
-                _isHost = true;
-                _localPlayerId = 1;
-
-                Console.WriteLine($"\n✅ Room created successfully!");
-                Console.WriteLine($"Room ID: {_currentRoomId.Substring(0, 8)}...");
-                Console.WriteLine($"\n⏳ Waiting for players to join...");
-
-                await ShowWaitingRoom();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"\n❌ Error creating room: {ex.Message}");
-                Thread.Sleep(2000);
-                return false;
-            }
-        }
-
-        public async Task<bool> JoinRoomAsync(string roomId, string playerName)
-        {
-            try
-            {
-                Console.Clear();
-                Console.WriteLine("╔══════════════════════════════════════════════════════════════╗");
-                Console.WriteLine("║                     JOINING ROOM                             ║");
-                Console.WriteLine("╚══════════════════════════════════════════════════════════════╝\n");
-
-                Console.WriteLine($"Room ID: {roomId.Substring(0, 8)}...");
-                Console.WriteLine($"Player Name: {playerName}");
-                Console.WriteLine("\n🔄 Joining room...");
-
-                bool success = await _signalRClient.JoinRoomAsync(roomId, playerName);
-
-                if (!success)
-                {
-                    Console.WriteLine("\n❌ Failed to join room");
-                    Thread.Sleep(2000);
-                    return false;
-                }
-
-                _currentRoomId = roomId;
-                _isHost = false;
-                _localPlayerId = 2;
-
-                Console.WriteLine("\n✅ Joined room successfully!");
-                Console.WriteLine("\n⏳ Waiting for host to start game...");
-
-                await ShowWaitingRoom();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"\n❌ Error joining room: {ex.Message}");
-                Thread.Sleep(2000);
-                return false;
-            }
-        }
-
-        private async Task ShowWaitingRoom()
-        {
-            var waitCancellation = new CancellationTokenSource();
-            int frame = 0;
-            string[] spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" };
-
-            while (!_eventHandler.IsGameActive && !waitCancellation.Token.IsCancellationRequested)
-            {
-                Console.SetCursorPosition(0, 10);
-                Console.Write($"{spinner[frame % spinner.Length]} Waiting");
-
-                if (_isHost)
-                {
-                    Console.WriteLine("\n\nPress SPACE to start game (requires 2+ players)");
-                    Console.WriteLine("Press ESC to cancel");
-
-                    if (Console.KeyAvailable)
-                    {
-                        var key = Console.ReadKey(true);
-                        if (key.Key == ConsoleKey.Spacebar)
-                        {
-                            await StartGameAsync();
-                            break;
-                        }
-                        else if (key.Key == ConsoleKey.Escape)
-                        {
-                            await _signalRClient.LeaveRoomAsync(_currentRoomId);
-                            return;
-                        }
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("\n\nWaiting for host to start...");
-                    Console.WriteLine("Press ESC to leave");
-
-                    if (Console.KeyAvailable)
-                    {
-                        var key = Console.ReadKey(true);
-                        if (key.Key == ConsoleKey.Escape)
-                        {
-                            await _signalRClient.LeaveRoomAsync(_currentRoomId);
-                            return;
-                        }
-                    }
-                }
-
-                frame++;
-                await Task.Delay(200);
-            }
-        }
-
-        public async Task StartGameAsync()
-        {
-            if (!_isHost)
-            {
-                Console.WriteLine("⚠️  Only host can start the game");
-                return;
-            }
-
-            try
-            {
-                Console.WriteLine("\n🎮 Starting game...");
-                await _signalRClient.StartGameAsync(_currentRoomId);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"❌ Error starting game: {ex.Message}");
-            }
-        }
-
         public void StartGame(User user, string roomId, bool isHost)
         {
             _currentRoomId = roomId;
@@ -657,17 +493,7 @@ namespace BombermanGame.src.MVC.Controllers
             }
         }
 
-        private void HandleDisconnection()
-        {
-            _isRunning = false;
-            _gameLoopCancellation?.Cancel();
-
-            Console.Clear();
-            ConsoleUI.WriteLineColored("\n❌ CONNECTION LOST\n", ConsoleColor.Red);
-            Console.WriteLine("The connection to the server was lost.");
-            Console.WriteLine("\nPress any key to return to menu...");
-            Console.ReadKey();
-        }
+        
 
         private void HandleGameStateChanged(string message)
         {
@@ -684,11 +510,6 @@ namespace BombermanGame.src.MVC.Controllers
             Console.WriteLine($"[ERROR] {error}");
         }
 
-        public void Cleanup()
-        {
-            _isRunning = false;
-            _gameLoopCancellation?.Cancel();
-            _eventHandler.UnregisterEventHandlers();
-        }
+       
     }
 }
