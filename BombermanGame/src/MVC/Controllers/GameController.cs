@@ -1,4 +1,4 @@
-﻿// MVC/Controllers/GameController.cs - DECORATOR PATTERN ENTEGRASYONU
+﻿// MVC/Controllers/GameController.cs
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +9,9 @@ using BombermanGame.src.Core;
 using BombermanGame.src.Models;
 using BombermanGame.src.Patterns.Behavioral.Observer;
 using BombermanGame.src.Patterns.Creational.Factory;
-using BombermanGame.src.Patterns.Structural.Decorator; // DECORATOR IMPORT
+using BombermanGame.src.Patterns.Structural.Decorator;
 using BombermanGame.src.UI;
+using BombermanGame.src.Audio;
 
 namespace BombermanGame.src.MVC.Controllers
 {
@@ -22,12 +23,11 @@ namespace BombermanGame.src.MVC.Controllers
         private ScoreObserver _scoreObserver;
         private StatsObserver _statsObserver;
         private UIObserver _uiObserver;
+        private SoundObserver _soundObserver;
         private bool _isRunning;
         private ScoreRepository _scoreRepository;
         private StatsRepository _statsRepository;
         private bool _isSinglePlayer;
-
-        // DECORATOR PATTERN: Decorated players tracking
         private Dictionary<int, IPlayer> _decoratedPlayers;
 
         public GameController()
@@ -42,10 +42,12 @@ namespace BombermanGame.src.MVC.Controllers
             _scoreObserver = new ScoreObserver();
             _statsObserver = new StatsObserver();
             _uiObserver = new UIObserver();
+            _soundObserver = new SoundObserver();
 
             _gameManager.Attach(_scoreObserver);
             _gameManager.Attach(_statsObserver);
             _gameManager.Attach(_uiObserver);
+            _gameManager.Attach(_soundObserver);
         }
 
         public void StartGame(string theme, bool isSinglePlayer = false)
@@ -53,7 +55,7 @@ namespace BombermanGame.src.MVC.Controllers
             _isRunning = true;
             _isSinglePlayer = isSinglePlayer;
             _gameManager.ResetGame();
-            _decoratedPlayers.Clear(); // Reset decorators
+            _decoratedPlayers.Clear();
 
             _scoreObserver.ResetScore();
             _statsObserver.Reset();
@@ -64,7 +66,6 @@ namespace BombermanGame.src.MVC.Controllers
             var player1 = new Player(1, "Player 1", new Position(1, 1));
             _gameManager.Players.Add(player1);
 
-            // DECORATOR PATTERN: Initialize decorated players
             _decoratedPlayers[1] = player1;
 
             if (!isSinglePlayer)
@@ -112,10 +113,8 @@ namespace BombermanGame.src.MVC.Controllers
             {
                 Console.Clear();
 
-                // DECORATOR PATTERN: Display decorated stats
                 Console.Write($"Score: {_scoreObserver.GetScore()} | Enemies: {_gameManager.Enemies.Count(e => e.IsAlive)} | PowerUps: {_gameManager.PowerUps.Count(p => !p.IsCollected)} | ");
 
-                // Show player stats with decorator enhancements
                 foreach (var kvp in _decoratedPlayers)
                 {
                     var player = _gameManager.Players.FirstOrDefault(p => p.Id == kvp.Key);
@@ -175,18 +174,14 @@ namespace BombermanGame.src.MVC.Controllers
 
             if (_gameManager.CurrentMap == null) return;
 
-            // Hareketten ÖNCE pozisyonları kaydet
             var playerPositionsBefore = _gameManager.Players
                 .Where(p => p.IsAlive)
                 .ToDictionary(p => p.Id, p => new Position(p.Position.X, p.Position.Y));
 
-            // Hareketi işle
             _inputController.ProcessMultiplayerInput(key, _gameManager.Players, _gameManager.CurrentMap);
 
-            // Hareketten SONRA her oyuncu için power-up kontrolü
             foreach (var player in _gameManager.Players.Where(p => p.IsAlive))
             {
-                // Power-up kontrolü - HER HAREKET SONRASI
                 CheckPowerUpCollection(player);
             }
         }
@@ -216,18 +211,15 @@ namespace BombermanGame.src.MVC.Controllers
 
             bomb.HasExploded = true;
 
-            // DECORATOR PATTERN: Use decorated player's BombPower
             var owner = _gameManager.Players.FirstOrDefault(p => p.Id == bomb.OwnerId);
             int explosionPower = owner != null && _decoratedPlayers.ContainsKey(owner.Id)
                 ? _decoratedPlayers[owner.Id].BombPower
                 : bomb.Power;
 
-            // Patlama alanını hesapla (MAP'in GetExplosionArea metodu duvarları dikkate alır)
             var explosionArea = _gameManager.CurrentMap.GetExplosionArea(bomb.Position, explosionPower);
 
             _gameManager.Notify(new GameEvent(EventType.BombExploded, bomb));
 
-            // ÖNCE duvarları işle ve power-up spawn et
             foreach (var pos in explosionArea)
             {
                 if (_gameManager.CurrentMap.IsDestructible(pos.X, pos.Y))
@@ -235,7 +227,6 @@ namespace BombermanGame.src.MVC.Controllers
                     _gameManager.CurrentMap.DamageWall(pos.X, pos.Y);
                     _gameManager.Notify(new GameEvent(EventType.WallDestroyed));
 
-                    // TEST: %100 şans ile power-up spawn (debug için)
                     if (new Random().Next(100) < 100)
                     {
                         SpawnPowerUp(pos);
@@ -243,16 +234,12 @@ namespace BombermanGame.src.MVC.Controllers
                 }
             }
 
-            // SONRA oyuncu ve düşman hasarını kontrol et
-            // (duvarlar artık yıkılmış olduğu için patlama alanı daha doğru)
             foreach (var pos in explosionArea)
             {
-                // Oyuncuları kontrol et - SADECE patlamaya yakalananlar
                 foreach (var player in _gameManager.Players)
                 {
                     if (player.IsAlive && player.Position.X == pos.X && player.Position.Y == pos.Y)
                     {
-                        // DEBUG: Hangi oyuncu nerede öldü
                         Console.SetCursorPosition(0, Console.WindowHeight - 4);
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine($"[EXPLOSION] {player.Name} hit at ({pos.X},{pos.Y}) by bomb at ({bomb.Position.X},{bomb.Position.Y})!");
@@ -264,7 +251,6 @@ namespace BombermanGame.src.MVC.Controllers
                     }
                 }
 
-                // Düşmanları kontrol et
                 foreach (var enemy in _gameManager.Enemies)
                 {
                     if (enemy.IsAlive && enemy.Position.X == pos.X && enemy.Position.Y == pos.Y)
@@ -280,7 +266,6 @@ namespace BombermanGame.src.MVC.Controllers
 
         private void SpawnPowerUp(Position position)
         {
-            // Burada zaten power-up var mı kontrol et
             bool alreadyExists = _gameManager.PowerUps.Any(p =>
                 p.Position.X == position.X && p.Position.Y == position.Y && !p.IsCollected);
 
@@ -293,17 +278,14 @@ namespace BombermanGame.src.MVC.Controllers
                 return;
             }
 
-            // Power-up tiplerini seç
             var types = Enum.GetValues(typeof(PowerUpType));
             var randomType = (PowerUpType)types.GetValue(new Random().Next(types.Length))!;
 
-            // Yeni power-up oluştur
             var powerUp = new PowerUp(new Position(position.X, position.Y), randomType);
-            powerUp.IsCollected = false; // Açıkça belirt
+            powerUp.IsCollected = false;
 
             _gameManager.PowerUps.Add(powerUp);
 
-            // Debug: Power-up oluşturulduğunu göster
             Console.SetCursorPosition(0, Console.WindowHeight - 1);
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write($"✅ Power-up spawned at ({position.X},{position.Y}): {randomType} | Total: {_gameManager.PowerUps.Count}     ");
@@ -314,16 +296,13 @@ namespace BombermanGame.src.MVC.Controllers
         {
             if (!player.IsAlive) return;
 
-            // Tüm power-up'ları kontrol et
             for (int i = _gameManager.PowerUps.Count - 1; i >= 0; i--)
             {
                 var powerUp = _gameManager.PowerUps[i];
 
-                // DEBUG: Power-up ve oyuncu pozisyonunu göster
                 Console.SetCursorPosition(0, Console.WindowHeight - 3);
                 Console.WriteLine($"[DEBUG] Player {player.Id} at ({player.Position.X},{player.Position.Y}) | PowerUp at ({powerUp.Position.X},{powerUp.Position.Y}) Collected:{powerUp.IsCollected}");
 
-                // Koşulları tek tek kontrol et
                 bool notCollected = !powerUp.IsCollected;
                 bool sameX = powerUp.Position.X == player.Position.X;
                 bool sameY = powerUp.Position.Y == player.Position.Y;
@@ -333,18 +312,14 @@ namespace BombermanGame.src.MVC.Controllers
 
                 if (notCollected && sameX && sameY)
                 {
-                    // Power-up toplandı!
                     powerUp.IsCollected = true;
 
-                    // DECORATOR PATTERN: Apply decorator to player
                     ApplyPowerUpWithDecorator(player, powerUp);
 
                     _gameManager.Notify(new GameEvent(EventType.PowerUpCollected, powerUp.Type));
 
-                    // Power-up'ı listeden kaldır
                     _gameManager.PowerUps.RemoveAt(i);
 
-                    // Görsel feedback
                     Console.SetCursorPosition(0, 0);
                     Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.WriteLine($"                                                                    ");
@@ -353,35 +328,32 @@ namespace BombermanGame.src.MVC.Controllers
                     Console.ResetColor();
 
                     Thread.Sleep(1500);
-                    break; // Bir seferde sadece bir power-up topla
+                    break;
                 }
             }
         }
 
-        // DECORATOR PATTERN: Apply power-up using decorators
         private void ApplyPowerUpWithDecorator(Player player, PowerUp powerUp)
         {
-            // Get current decorated player (might already have decorators)
             IPlayer currentPlayer = _decoratedPlayers[player.Id];
 
-            // Wrap with appropriate decorator
             switch (powerUp.Type)
             {
                 case PowerUpType.BombCount:
                     _decoratedPlayers[player.Id] = new BombCountDecorator(currentPlayer, 1);
-                    player.IncreaseBombCount(); // Also update base player
+                    player.IncreaseBombCount();
                     Console.WriteLine($"[DECORATOR] Applied BombCountDecorator to {player.Name}");
                     break;
 
                 case PowerUpType.BombPower:
                     _decoratedPlayers[player.Id] = new BombPowerDecorator(currentPlayer, 1);
-                    player.IncreaseBombPower(); // Also update base player
+                    player.IncreaseBombPower();
                     Console.WriteLine($"[DECORATOR] Applied BombPowerDecorator to {player.Name}");
                     break;
 
                 case PowerUpType.SpeedBoost:
                     _decoratedPlayers[player.Id] = new SpeedBoostDecorator(currentPlayer, 1);
-                    player.IncreaseSpeed(); // Also update base player
+                    player.IncreaseSpeed();
                     Console.WriteLine($"[DECORATOR] Applied SpeedBoostDecorator to {player.Name}");
                     break;
             }
@@ -508,7 +480,6 @@ namespace BombermanGame.src.MVC.Controllers
             Console.WriteLine($"⭐ Power-ups Collected: {_statsObserver.GetPowerUpsCollected()}");
             Console.WriteLine($"\n🎮 Players Survived: {alivePlayers.Count}/{_gameManager.Players.Count}");
 
-            // DECORATOR PATTERN: Show final decorated stats
             Console.WriteLine("\n📈 Final Player Stats (with decorators):");
             foreach (var kvp in _decoratedPlayers)
             {
