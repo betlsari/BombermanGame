@@ -256,7 +256,11 @@ namespace BombermanGame.src.MVC.Controllers
 				_gameManager.CurrentMap = new Models.Map(21, 11, theme);
 				// -----------------------
 
-				_gameManager.Players.Clear();
+
+				_gameManager.Enemies.Clear();   // Düşmanları temizle
+				_gameManager.PowerUps.Clear();  // Güçlendirmeleri temizle
+				_gameManager.Bombs.Clear();     // Bombaları temizle
+				_gameManager.Players.Clear();   // Oyuncuları temizle
 				var player1 = new Models.Player(1, "Player 1", new Models.Position(1, 1));
 				_gameManager.Players.Add(player1);
 
@@ -581,10 +585,14 @@ namespace BombermanGame.src.MVC.Controllers
 
 		private bool CheckGameOver()
 		{
+			// Sadece hayatta kalan oyuncu sayısını say
 			int alivePlayers = _gameManager.Players.Count(p => p.IsAlive);
-			int aliveEnemies = _gameManager.Enemies.Count(e => e.IsAlive);
 
-			return alivePlayers <= 1 || aliveEnemies == 0;
+			// Düşman kontrolünü (aliveEnemies == 0) SİLDİK.
+			// Çünkü PvP modunda düşman olmadığı için oyun anında bitiyordu.
+
+			// Eğer 1 veya daha az oyuncu kaldıysa oyun biter.
+			return alivePlayers <= 1;
 		}
 
 		private async Task EndGameAsync()
