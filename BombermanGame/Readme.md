@@ -300,47 +300,47 @@ Kırılan duvarlardan **%30 şans** ile power-up düşer:
 
 **Strategy Pattern** ile runtime'da değiştirilebilir.
 
----
 
-### 🎨 Tema Sistemi
 
-#### 1. Desert Theme (Çöl Teması)
+### 🎨 Theme System
+
+#### 1. Desert Theme
 ```
-Renkler:
-- Zemin: Sarı (Sand)
-- Kırılabilir: DarkYellow (Stone)
-- Kırılamaz: Gray (Rock)
+Colors:
+- Background: Yellow (Sand)
+- Breakable: DarkYellow (Stone)
+- Unbreakable: Gray (Rock)
 
-Karakterler:
-- Zemin: ░ (Light shade)
-- Kırılabilir: ▒ (Medium shade)
-- Kırılamaz: ▓ (Dark shade)
-```
-
-#### 2. Forest Theme (Orman Teması)
-```
-Renkler:
-- Zemin: Green (Grass)
-- Kırılabilir: DarkYellow (Log)
-- Kırılamaz: DarkGreen (Tree)
-
-Karakterler:
-- Zemin: · (Dot)
-- Kırılabilir: ≡ (Triple line)
-- Kırılamaz: ♣ (Club)
+Characters:
+- Background: ░ (Light shade)
+- Breakable: ▒ (Medium shade)
+- Unbreakable: ▓ (Dark shade)
 ```
 
-#### 3. City Theme (Şehir Teması)
+#### 2. Forest Theme
 ```
-Renkler:
-- Zemin: Gray (Concrete)
-- Kırılabilir: Red (Brick)
-- Kırılamaz: DarkGray (Metal)
+Colors:
+- Background: Green (Grass)
+- Breakable: DarkYellow (Log)
+- Unbreakable: DarkGreen (Tree)
 
-Karakterler:
-- Zemin: █ (Full block)
-- Kırılabilir: ▓ (Dark shade)
-- Kırılamaz: ■ (Square)
+Characters:
+- Background: · (Dot)
+- Breakable: ≡ (Triple line)
+- Unbreakable: ♣ (Club)
+```
+
+#### 3. City Theme (City Theme)
+```
+Colors:
+- Ground: Gray (Concrete)
+- Breakable: Red (Brick)
+- Unbreakable: DarkGray (Metal)
+
+Characters:
+- Ground: █ (Full block)
+- Breakable: ▓ (Dark shade)
+- Unbreakable: ■ (Square)
 ```
 
 ---
