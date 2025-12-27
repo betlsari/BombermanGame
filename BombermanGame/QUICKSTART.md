@@ -1,216 +1,172 @@
-﻿# 🚀 Bomberman Multiplayer - Quick Start Guide
-
-## ⚡ Hızlı Başlangıç (5 dakika)
-
-### Windows Kullanıcıları
-
-```batch
-# 1. Kurulum
+﻿🚀 Bomberman Multiplayer - Quick Start Guide
+⚡ Quick Start
+Windows Users
+batch# 1. Setup
 setup.bat
-
-# 2. Oyunu Çalıştır
+# 2. Run the Game
 run.bat
-```
-
-### Linux/Mac Kullanıcıları
-
-```bash
-# 1. Çalıştırma izni ver
+Linux/Mac Users
+bash# 1. Grant execution permission
 chmod +x setup.sh run.sh
-
-# 2. Kurulum
+# 2. Setup
 ./setup.sh
-
-# 3. Oyunu Çalıştır
+# 3. Run the Game
 ./run.sh
 ```
 
 ---
 
-## 🎮 İlk Oyun
+## 🎮 First Game
 
-### 1. Hesap Oluştur
+### 1. Create Account
 ```
 Main Menu → 2. Register
-- Kullanıcı adı: hero
-- Şifre: 123456
+- Username: hero
+- Password: 123456
 ```
 
-### 2. Giriş Yap
+### 2. Login
 ```
 Main Menu → 1. Login
-- Kullanıcı adı: hero
-- Şifre: 123456
+- Username: hero
+- Password: 123456
 ```
 
-### 3. Oyunu Başlat
+### 3. Start Game
 ```
 Game Menu → 1. Start Single Player Game
-- Tema seç: Desert
-- Başla!
+- Select theme: Desert
+- Start!
 ```
 
 ---
 
-## ⌨️ Kontroller
+## ⌨️ Controls
 
-### Oyuncu 1
+### Player 1
 ```
-W / ↑   : Yukarı
-S / ↓   : Aşağı
-A / ←   : Sol
-D / →   : Sağ
-SPACE   : Bomba Koy
-```
-
-### Oyuncu 2 (İki Oyunculu)
-```
-I       : Yukarı
-K       : Aşağı
-J       : Sol
-L       : Sağ
-ENTER   : Bomba Koy
+W / ↑   : Move Up
+S / ↓   : Move Down
+A / ←   : Move Left
+D / →   : Move Right
+SPACE   : Place Bomb
 ```
 
-### Genel
+### Player 2 (Two Players)
 ```
-ESC     : Menüye Dön
-U       : Geri Al (Undo)
+I       : Move Up
+K       : Move Down
+J       : Move Left
+L       : Move Right
+ENTER   : Place Bomb
 ```
 
----
+### General
+```
+ESC     : Return to Menu
+U       : Undo
 
-## 🎯 Oyun Mekaniği
+🎯 Game Mechanics
+Basic Rules
 
-### Temel Kurallar
-1. Bombalar 3 saniye sonra patlar
-2. Patlama 4 yöne yayılır
-3. Düşmanlara değme!
-4. Duvarları yıkarak power-up'lar bul
+Bombs explode after 3 seconds
+Explosion spreads in 4 directions
+Don't touch enemies!
+Destroy walls to find power-ups
 
-### Power-ups
-- **B** = Bomba sayısı +1
-- **P** = Bomba gücü +1
-- **S** = Hız artışı +1
+Power-ups
 
-### Düşmanlar
-- **E** = Statik (hareket etmez)
-- **C** = Takipçi (basit AI)
-- **A** = Akıllı (A* algoritması)
+B = Bomb count +1
+P = Bomb power +1
+S = Speed increase +1
 
----
+Enemies
 
-## 🌐 Multiplayer (Online)
+E = Static (doesn't move)
+C = Chaser (simple AI)
+A = Smart (A* algorithm)
 
-### Host Olarak
 
-1. Game Menu → 3. Multiplayer
-2. 1. Host Game
-3. IP adresini arkadaşına ver
-4. Bekle...
+🌐 Multiplayer (Online)
+As Host
 
-### Client Olarak
+Game Menu → 3. Multiplayer
 
-1. Game Menu → 3. Multiplayer
-2. 2. Join Game
-3. Host'un IP'sini gir
-4. Bağlan!
 
-**IP Öğrenme:**
-```bash
-# Windows
+Host Game
+
+
+Give your IP address to friend
+Wait...
+
+As Client
+
+Game Menu → 3. Multiplayer
+
+
+Join Game
+
+
+Enter host's IP
+Connect!
+
+Find Your IP:
+bash# Windows
 ipconfig
-
 # Linux/Mac
 ifconfig
-```
 
----
-
-## ❓ Sorun Giderme
-
-### "dotnet bulunamadı"
-```bash
-# .NET 7.0 SDK indirin
+❓ Troubleshooting
+"dotnet not found"
+bash# Download .NET 7.0 SDK
 https://dotnet.microsoft.com/download
-```
-
-### "Database hatası"
-```bash
-# Database'i sıfırla
+"Database error"
+bash# Reset database
 del bomberman.db  # Windows
 rm bomberman.db   # Linux/Mac
-
-# Tekrar çalıştır
+# Run again
 dotnet run
 ```
 
-### "Port zaten kullanımda" (Multiplayer)
+### "Port already in use" (Multiplayer)
 ```
-- Farklı port deneyin (örn: 9998, 10000)
-- Veya diğer programı kapatın
-```
-
-### "Bağlantı kurulamadı" (Multiplayer)
-```
-✓ Her iki bilgisayar aynı ağda mı?
-✓ Firewall izin veriyor mu?
-✓ IP adresi doğru mu?
-✓ Host önce başladı mı?
+- Try a different port (e.g., 9998, 10000)
+- Or close the other program
 ```
 
----
+### "Connection failed" (Multiplayer)
+```
+✓ Are both computers on the same network?
+✓ Is firewall allowing connection?
+✓ Is the IP address correct?
+✓ Did host start first?
 
-## 📚 Daha Fazla Bilgi
+📚 More Information
 
-- **README.md** - Genel bakış ve özellikler
-- **DesignDocument.md** - Tasarım kalıpları açıklaması
-- **UMLDiagrams.md** - UML diyagramları
+README.md - Overview and features
+DesignDocument.md - Design patterns explanation
+UMLDiagrams.md - UML diagrams
 
----
+💡 Tips
+Strategy
 
-## 🎓 Öğrenme İpuçları
+Don't get cornered!
+Escape before bomb explodes
+Collect power-ups
+Learn enemy patterns
 
-### Yeni Başlayanlar
-1. Tek oyunculu modla başlayın
-2. Kontrolleri öğrenin
-3. Power-up'ları toplayın
-4. Düşman davranışlarını gözlemleyin
+Increase Score
 
-### İleri Seviye
-1. İki oyunculu modda pratik yapın
-2. Farklı temaları deneyin
-3. Undo özelliğini kullanın
-4. Online multiplayer oynayın
+Destroy wall: +10
+Kill enemy: +50
+Collect power-up: +25
+Finish quickly: Bonus!
 
----
 
-## 💡 İpuçları
+🏆 First Goals
 
-### Strateji
-- Köşelere sıkışma!
-- Bomba patlamadan kaç
-- Power-up'ları topla
-- Düşman yollarını öğren
-
-### Skoru Yükselt
-- Duvar yık: +10
-- Düşman öldür: +50
-- Power-up topla: +25
-- Hızlı bitir: Bonus!
-
----
-
-## 🏆 İlk Hedefler
-
-- [ ] İlk oyunu bitir
-- [ ] 500+ skor yap
-- [ ] 5 düşman öldür
-- [ ] Tüm power-up'ları dene
-- [ ] Arkadaşınla online oyna
-
----
-
-**Oyunun tadını çıkar! 🎮💣**
-
-Son Güncelleme: 18 Aralık 2025
+ Complete first game
+ Score 500+
+ Kill 5 enemies
+ Try all power-ups
+ Play online with friend
