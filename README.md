@@ -836,10 +836,8 @@ BombermanMultiplayer/
 ## 🔗 Useful Links
 
 ### Documentation
-- [Design Document](DesignDocument.md) - Detailed design explanations
-- [UML Diagrams](UMLDiagrams.md) - All UML diagrams
 - [Quick Start](QUICKSTART.md) - Start in 5 minutes
-- [Submission Checklist](SubmissionCheckList.md) - Submission checklist
+
 
 ### References
 - [Head First Design Patterns](https://www.oreilly.com/library/view/head-first-design/0596007124/)
