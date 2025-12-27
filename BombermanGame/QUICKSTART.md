@@ -123,7 +123,7 @@ ifconfig
 
 ### "dotnet not found"
 ```bash
-# Download .NET 7.0 SDK
+# Download .NET 6.0 SDK
 https://dotnet.microsoft.com/download
 ```
 
@@ -154,8 +154,7 @@ dotnet run
 
 ## 📚 More Information
 - **README.md** - Overview and features
-- **DesignDocument.md** - Design patterns explanation
-- **UMLDiagrams.md** - UML diagrams
+
 
 ## 💡 Tips
 
@@ -165,18 +164,13 @@ dotnet run
 - Collect power-ups
 - Learn enemy patterns
 
-### Increase Score
-- Destroy wall: +10
-- Kill enemy: +50
-- Collect power-up: +25
-- Finish quickly: Bonus!
+
 
 ---
 
 ## 🏆 First Goals
 - [ ] Complete first game
 - [ ] Score 500+
-- [ ] Kill 5 enemies
 - [ ] Try all power-ups
 - [ ] Play online with friend
 
